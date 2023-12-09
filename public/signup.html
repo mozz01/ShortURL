@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta name="robots" content="noindex, noarchive, nofollow">
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+        <title>ShortURL Tool - Sign Up</title>
+        
+        <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+        <script src='main.js'></script>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+        <link rel="manifest" href="site.webmanifest">
+    </head>
+
+    <body>
+        <header class="account-controls">
+            <a href="index.html" id="logo">
+                <h1>ShortURL Tool<img src="android-chrome-192x192.png"></h1>
+            </a>
+            
+            <div id="acc-options-container">
+                <a href="login.html">
+                    <button id="loginButton">Log in</button>
+                </a>
+                <a href="signup.html">
+                    <button id="signupButton">Sign up</button>
+                </a>
+            </div>
+        </header>
+        
+        <nav id="global">
+            <a href="index.html">Home</a>
+            <a href="account.html">Account</a>
+        </nav>
+
+        <main>
+            
+            <form action="signup" method="POST">
+                <div class="container">
+                    <h1>Sign Up</h1>
+                    <label for="username"><b>Username</b></label>
+                    <input 
+                        required
+                        type="text" 
+                        placeholder="Enter Username" 
+                        name="username">
+
+                    <label for="password"><b>Password</b></label>
+                    <input 
+                        required
+                        type="password" 
+                        placeholder="Enter Password"
+                        name="password">
+                    
+                    <label for="repassword"><b>Repeat Password</b></label>
+                        <input 
+                            required
+                            type="password" 
+                            placeholder="Repeat Password"
+                            name="repassword">
+    
+                    <button type="submit">Signup</button>
+                </div>
+    
+            </form>
+            
+        </main>
+
+        <footer>
+            <p>
+                &copy; 2023 Mo Hudeihed
+            </p>
+        </footer>
+    
+    </body>
+</html>
