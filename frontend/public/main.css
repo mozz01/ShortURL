@@ -28,7 +28,6 @@
 body {
     /* Can alternatively define in html {}. */
     background-color: #2f5165;
-
     color: var(--easy-white);
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
@@ -278,6 +277,11 @@ legend {
     margin: 3px;
 }
 */
+
+#acc-options-container{
+    margin-bottom: 15px;
+}
+
 .inputbox
 {
     background-color: #F7FFF7;
@@ -345,16 +349,19 @@ select:hover,
     background-color: var(--highlight);
 }
 
+
+button:disabled{
+    background-color: #717273;
+    color: white;
+    cursor: not-allowed;
+}
+
+
 input:focus,
 textarea:focus{
     border-color: var(--highlight);
 }
 
-button:active{
-    background-color: #F7FFF7;
-    border: 2px solid #3A506B;
-    color: black;
-}
 
 input {
     font-size: 100%;
@@ -366,6 +373,7 @@ input {
     margin-top: 20px;
     margin-bottom: 10px;
 }
+
 
 select{
     font-size: 100%;
@@ -385,11 +393,11 @@ select{
 
 #urlbox{
     width: 99%;
-    height: 40px;
+    height: 50px;
     display: block;
     float: left;
-    font-size: large;
-    padding: 0px 10px;
+    font-size: 25px;
+    padding: 0px 20px;
 }
 
 /* #get-url{ 
@@ -406,8 +414,11 @@ select{
 }
 
 .options{
-    margin-top: auto;
-    width: 170px;
+    margin-bottom: 10px;
+    width: 180px;
+    height: 45px;
+    margin-top: 0px;
+    font-size: 20px;
 }
 
 .hidden{

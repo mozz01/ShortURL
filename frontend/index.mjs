@@ -33,10 +33,10 @@ const beginning = `
             
             <div id="acc-options-container">
                 <a href="login.html">
-                    <button id="loginButton">Log in</button>
+                    <button id="loginButton" class="account-options">Log in</button>
                 </a>
                 <a href="signup.html">
-                    <button id="signupButton">Sign up</button>
+                    <button id="signupButton" class="account-options">Sign up</button>
                 </a>
             </div>
         </header>
@@ -47,7 +47,6 @@ const beginning = `
         </nav>
 
         <main id="main-container">
-        <h1>Your URL is ready!</h1>
 `;
 const end = `
     </main>
@@ -71,36 +70,91 @@ app.use(
 );
 
 
-app.get("/", (req, res) => {
-    res.send('Hi');
-});
-
-
+// Generate a short URL with a random ID whose length is set by user
 app.post("/generate", async (req, res) => {
-
     let long_url = req.body.urlbox;
-    const id_length = req.body.alias;
-    let generated_id = await get_id(id_length);
-    let short_url = await get_long_url(long_url, generated_id);
 
-    res.send(
+    try
+    {
+        // Validating before generating short URL
+        if(! (await validateURL(long_url)) )
+        {
+            throw new Error(`The provided link "${long_url}" is invalid or is not reachable. Unable to geterate short URL.`);
+        }
+        
+        // Capturing the length of the short URL
+        const id_length = req.body.alias;
+
+        let generated_id = await getShortID(id_length);
+        let short_url = await getCompleteShortURL(long_url, generated_id);
+        
+        console.log("Short URL is ready. Sending response back to user.");
+        res.send(
+                `${beginning}
+                    <h1>Your URL is ready!</h1>
+                    <p class="hidden" id="long">${long_url}</p>
+                    <p class="hidden" id="short">${short_url}</p>
+                    <p class="hidden" id="shortid">${generated_id}</p>
+                ${end}`);
+    }
+    catch(error)
+    {
+        console.error(`Error raised:\n\n\t${error.message}\n\n\t${error}\n`);
+        
+        res.send(
             `${beginning}
-                <p class="hidden" id="long">${long_url}</p>
-                <p class="hidden" id="short">${short_url}</p>
-                <p class="hidden" id="shortid">${generated_id}</p>
+                <h2>${error.message}</h2>
+                <a href="index.html"><button>Go to Homepage</button></a>
             ${end}`);
-    
-    // console.log(req.body);
+    }
 });
 
 
-async function get_id(id_length){
+// Request a short URL with a custom ID
+app.post('/customurl', async (req, res) => {
+    const customID = req.body.customurl;
+    const long_url = req.body.urlbox;
+
+    try
+    {
+        if(! (await validateURL(long_url)) )
+        {
+            throw new Error(`The provided link "${long_url}" is invalid or is not reachable. Unable to geterate short URL.`);
+        }
+    
+        let short_url = await getCompleteShortURL(long_url, customID);
+        
+        res.send(
+                `${beginning}
+                    <h1>Your URL is ready!</h1>
+                    <p class="hidden" id="long">${long_url}</p>
+                    <p class="hidden" id="short">${short_url}</p>
+                    <p class="hidden" id="shortid">${customID}</p>
+                ${end}`);
+    
+    }
+    catch(error)
+    {
+        console.error(`Error raised:\n\n\t${error.message}\n\n\t${error}\n`);
+        
+        res.send(
+            `${beginning}
+                <h2>${error.message}</h2>
+                <a href="index.html"><button>Go to Homepage</button></a>
+            ${end}`);
+    }
+});
+
+
+// Request a randomized string from the microservice
+async function getShortID(id_length){
     const baseURL = new URL(`http://localhost:${process.env.SERVICE_PORT}/`)
     const data = {
         length: id_length
     };
 
     try {
+        // Send POST request to the microservice
         const response = await fetch(baseURL, {
             method: "POST",
             headers: {
@@ -109,6 +163,7 @@ async function get_id(id_length){
             body: JSON.stringify(data)
         });
 
+        // Check response status
         if (!response.ok) 
         {
             throw new Error(`HTTP error!`);
@@ -117,8 +172,8 @@ async function get_id(id_length){
         const res = await response.json();
         const id = res["string"];
 
-        // console.log("\nGenerated ID:", id);
-        
+        // Return the generated random string
+        console.log("Generated short URL ID:", id);
         return id;
     } 
     catch (error) {
@@ -133,8 +188,10 @@ async function get_id(id_length){
 }
 
 
-async function get_long_url(long_url, custom_id){
-    
+// Updates the database with the URL information 
+async function getCompleteShortURL(long_url, custom_id)
+{
+    // Assembling short URL
     const short = redirectionBaseURL + custom_id;
     const data = {
         "long": long_url,
@@ -144,6 +201,7 @@ async function get_long_url(long_url, custom_id){
 
     try 
     {
+        // Creating a new URL information entry
         const response = await fetch(dbBaseEndpoint, {
             method: "POST",
             headers: {
@@ -154,29 +212,25 @@ async function get_long_url(long_url, custom_id){
 
         if(!response.ok)
         {
-            throw new Error(`HTTP error!`);
+            throw new Error(`Failed to reach the database while creating new URL.`);
         }
 
-        const res = await response.json();
-        // console.log(res);
-        
-        console.log("Generated short link:", short);
-        
+        console.log("Added URL information to the database successfully.");
         return short;
     }
     catch (error) 
     {
-        if(error.message === `HTTP error!`)
+        if(error.message === `Failed to reach the database while creating new URL.`)
         {
-            console.log(`\n\tError raised: ${error.message}\n`);
+            console.error(`Error raised:\n\n\t${error.message}\n\n\t${error}\n`);
         }
-        console.error(error.message, error);
         
-        return "Failed to generate short URL. Please try different inputs.";
+        return false;
     }
 }
 
 
+// Invoked when a short URL is used to redirect trafic to the long URL
 app.get(`/:_shortid`, async (req, res) => {
 
     const shortid = req.params._shortid; 
@@ -188,9 +242,8 @@ app.get(`/:_shortid`, async (req, res) => {
         
         if(!response.ok)
         {
-            throw new Error(`HTTP error!`);
+            throw new Error(`Failed to reach the database while retrieving long URL.`);
         }
-
         const result = (await response.json())[0];
         
         updateClicks(result);
@@ -199,15 +252,47 @@ app.get(`/:_shortid`, async (req, res) => {
     }
     catch (error) 
     {
-        if(error.message === `HTTP error!`)
+        if(error.message === `Failed to reach the database while retrieving long URL.`)
         {
-            console.log(`\n\tError raised: ${error.message}\n`);
+            console.error(`Error raised:\n\n\t${error.message}\n\n\t${error}\n`);
         }
         console.error(error.message, error);
     }
 });
 
 
+// Checks long URL input, adds potocol if needed, and pings the URL to see if responsive
+async function validateURL(targetURL)
+{
+    const urlPattern = /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/;
+    const urlBeninning = /^(http(s)?:\/\/)/;
+    let pingURL = targetURL;
+
+    // Check URL pattern for validity
+    const isValid = urlPattern.test(targetURL);
+    // console.log(`${targetURL}: ${isValid ? 'Valid' : 'Invalid'} URL`);
+    
+    if(!isValid)
+    {
+        return false;
+    }
+
+    if(!urlBeninning.test(targetURL))
+    {
+        pingURL = 'https://' + targetURL;
+    }
+
+    // Ping URL to check for responsiveness
+    const response = await fetch(pingURL, {
+        mode: 'no-cors'
+    });
+
+    console.log("Long URL validation completed.");
+    return response.ok;
+}
+
+
+// Used for tracking visit to generated short URLs
 async function updateClicks(url)
 {
     const updateURLEndpoint = `${dbBaseEndpoint}/${url._id}`;
@@ -222,6 +307,7 @@ async function updateClicks(url)
 
     try 
     {
+        // Update count in the database
         const response = await fetch(updateURLEndpoint, { 
             method: "PUT",
             headers: {"Content-Type": "application/json"},
@@ -241,20 +327,6 @@ async function updateClicks(url)
         console.log(`\n\tError raised: ${error.message}\n`);
     }
 }
-
-
-app.post('/customurl', async (req, res) => {
-    const customID = req.body.customurl;
-    const long_url = req.body.urlbox;
-    let short_url = await get_long_url(long_url, customID);
-    
-    res.send(
-            `${beginning}
-                <p class="hidden" id="long">${long_url}</p>
-                <p class="hidden" id="short">${short_url}</p>
-                <p class="hidden" id="shortid">${customID}</p>
-            ${end}`);
-});
 
 
 app.listen(PORT, () => {

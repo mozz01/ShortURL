@@ -48,30 +48,32 @@
                             autofocus
                             type="text"
                             name="urlbox" 
-                            id="customurlbox"
+                            id="longURLBox"
                             class="inputbox" 
                             maxlength="2048"  
                             placeholder="Type/Paste Your Long URL Here"
                             aria-required="true"
-                            
+                            pattern="(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})"
+                            oninput="updateCharacterCount('longURLBox', 'urlCount')"
                             >
-                            <!-- oninput="updateCharacterCount('urlbox', 'urlCount')" -->
-                    <div>
+                            
+                    <!-- <div>
                         <span id="urlCount">0</span> / 2048
-                    </div>
+                    </div> -->
 
                     <label for="customurl" class="customurltext"><b>Enter Your Custom URL Below:</b></label>
                     <input 
                         required
                         type="text" 
-                        placeholder="Write 50 characters or less." 
+                        id="customurl"
+                        placeholder="Write 6 to 50 characters" 
                         maxlength="50"
-                        minlength="8"
+                        minlength="6"
                         class="inputbox" 
                         name="customurl"
+                        oninput="updateCharacterCount('customurl', 'customUrlCount', 6, 50)"
                         >
-                        <!-- oninput="updateCharacterCount('customurl', 'customUrlCount')" -->
-                    
+                        
                         <div>
                             <span id="customUrlCount">0</span> / 50
                         </div>
