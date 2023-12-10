@@ -243,6 +243,20 @@ async function updateClicks(url)
 }
 
 
+app.post('/customurl', async (req, res) => {
+    const customID = req.body.customurl;
+    const long_url = req.body.urlbox;
+    let short_url = await get_long_url(long_url, customID);
+    
+    res.send(
+            `${beginning}
+                <p class="hidden" id="long">${long_url}</p>
+                <p class="hidden" id="short">${short_url}</p>
+                <p class="hidden" id="shortid">${customID}</p>
+            ${end}`);
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
 });

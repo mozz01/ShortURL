@@ -95,8 +95,12 @@ footer {
 }
 
 /* ----- Anchors ----- Text links */
-/* a {}
+ 
+a {
+    text-decoration: none;
+}
 
+/*
 a:link {}
 
 a:hover {}
@@ -119,7 +123,6 @@ a:visited {} */
 
 nav a {
     color: var(--dark-green);
-    text-decoration: none;
     padding: 15px 5%;
 }
 
@@ -274,24 +277,58 @@ legend {
     padding: 3px 10px;
     margin: 3px;
 }
+*/
+.inputbox
+{
+    background-color: #F7FFF7;
+    color: var(--light-black);
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 20px;
+}
 
-label {
-    color: var(--dark-blue);
-    border-radius: 10px;
-    padding: 10px 0px;
-    margin: 10px 0px;
-}*/
+
+.customurltext {
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+
+
+label{
+    font-size: 1.2em; 
+    margin-bottom: 10px;
+
+}
+
 
 button{
-    background-color: #F7FFF7;
-    border: 2px solid #3A506B;
-    width: 150px;
-    padding: 4px 10px;
-    font-size: 100%;
+    width: 160px;
+    background-color: var(--light-black);
+    color: white;
+    font-weight: 600;
+    padding: 10px 15px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
     margin-right: 5px;
 }
+
+
+.account-options{
+    color: var(--light-black);
+    background-color: var(--easy-white);
+}
+
 
 
 button:hover, 
@@ -301,11 +338,11 @@ select:hover,
 #clear:hover,
 #copyButton:hover,
 #toggle-hidden:hover,
-#submit:hover
+#submit:hover,
+.account-options:hover
 {
+    color: var(--light-black);
     background-color: var(--highlight);
-    color: black;
-    border-color: var(--highlight);
 }
 
 input:focus,
@@ -370,7 +407,7 @@ select{
 
 .options{
     margin-top: auto;
-    width: 150px;
+    width: 170px;
 }
 
 .hidden{
@@ -399,7 +436,9 @@ input[type=text], input[type=password] {
 }
 
 .container {
-    padding: 16px;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 #alias{

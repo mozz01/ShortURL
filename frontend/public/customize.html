@@ -9,7 +9,7 @@
         <title>ShortURL Tool - Customize URL</title>
         
         <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-        <script src='main.js'></script>
+        <script defer src='customize.js'></script>
 
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -25,10 +25,10 @@
             
             <div id="acc-options-container">
                 <a href="login.html">
-                    <button id="loginButton">Log in</button>
+                    <button id="loginButton" class="account-options">Log in</button>
                 </a>
                 <a href="signup.html">
-                    <button id="signupButton">Sign up</button>
+                    <button id="signupButton" class="account-options">Sign up</button>
                 </a>
             </div>
         </header>
@@ -42,15 +42,41 @@
             <form action="customurl" method="POST">
                 <div class="container">
                     <h1>Customize URL</h1>
-                    <label for="customurl"><b>Enter Your Custom URL Below:</b></label>
+                    <label for="urlbox" class="required customurltext"><b>Enter long URL:</b></label>
+                        <input
+                            required 
+                            autofocus
+                            type="text"
+                            name="urlbox" 
+                            id="customurlbox"
+                            class="inputbox" 
+                            maxlength="2048"  
+                            placeholder="Type/Paste Your Long URL Here"
+                            aria-required="true"
+                            
+                            >
+                            <!-- oninput="updateCharacterCount('urlbox', 'urlCount')" -->
+                    <div>
+                        <span id="urlCount">0</span> / 2048
+                    </div>
+
+                    <label for="customurl" class="customurltext"><b>Enter Your Custom URL Below:</b></label>
                     <input 
                         required
                         type="text" 
                         placeholder="Write 50 characters or less." 
                         maxlength="50"
-                        name="customurl">
+                        minlength="8"
+                        class="inputbox" 
+                        name="customurl"
+                        >
+                        <!-- oninput="updateCharacterCount('customurl', 'customUrlCount')" -->
+                    
+                        <div>
+                            <span id="customUrlCount">0</span> / 50
+                        </div>
 
-                    <button type="submit">Submit</button>
+                    <button type="submit" id="customurlbutton">Submit</button>
                 </div>
             </form>
             
