@@ -1,0 +1,93 @@
+### CREATE five documents.
+POST http://localhost:3001/urls HTTP/1.1
+content-type: application/json
+
+{
+    "long": "https://web.engr.oregonstate.edu/~hudeihem/",
+    "shortid": "shortid",
+    "short": "short"
+}
+
+### CREATE 2
+POST http://localhost:3001/urls HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Fundamentals of Software Engineering II",
+    "term": "Winter",
+    "year": 2023,
+    "grade": "B"
+}
+
+### CREATE 3
+POST http://localhost:3001/urls HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Intro to Usability Engineering",
+    "term": "Spring",
+    "year": 2023,
+    "grade": "C"
+}
+
+### CREATE 4
+POST http://localhost:3001/urls HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Analysis of Algorithms",
+    "term": "Spring",
+    "year": 2022,
+    "grade": "D"
+}
+
+### CREATE 5
+POST http://localhost:3001/urls HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Introduction to Databases",
+    "term": "Winter",
+    "year": 2023,
+    "grade": "A"
+}
+
+
+### RETRIEVE all documents.
+GET http://localhost:3001/urls HTTP/1.1
+
+
+
+### RETRIEVE a document by its ID.
+### Replace the following ID with one that exists in the collection.
+GET http://localhost:3001/urls/657437c280ec538a98c2e73c HTTP/1.1
+
+
+### UPDATE one document's year, by ID.
+### Replace the ID in the following request with one that exists
+### and update the year:
+PUT http://localhost:3001/urls/656d85a364137d27aeb85c40 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Web Development",
+    "term": "Fall",
+    "year": 2023,
+    "grade": "A"
+}
+
+
+### DELETE by ID (responds with nothing if successful):
+DELETE http://localhost:3001/urls/657425ae0588e23f0090cbcb HTTP/1.1
+
+
+
+### RETRIEVE all documents (responds with 4 or the original 5):
+GET http://localhost:3001/urls HTTP/1.1
+
+
+### Replace the following ID with one that exists in the collection.
+GET http://localhost:3001/urls/shortid/yq1D7p2z HTTP/1.1
+content-type: application/json
+
+

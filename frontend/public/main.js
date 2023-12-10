@@ -69,6 +69,7 @@ catch (err)
 
 const long_url = document.getElementById('long');
 const short_url = document.getElementById('short'); 
+const shortid = document.getElementById('shortid');
 
 const mainContainer = document.getElementById('main-container');
 
@@ -95,7 +96,7 @@ copyShortUrlButton.innerText = 'Copy Short URL';
 trackClicksButton.type = 'button';
 trackClicksButton.class = 'options';
 trackClicksButton.innerText = 'Track Clicks';
-trackClicksButtonAnchor.href = 'track.html';
+trackClicksButtonAnchor.href = `track.html?shortid=${shortid.innerText}`;
 longUrlContainer.innerText = long_url.innerText;
 buttonsContainer.id = 'buttonsContainer';
 
@@ -112,6 +113,7 @@ mainContainer.appendChild(buttonsContainer);
 
 mainContainer.removeChild(long_url);
 mainContainer.removeChild(short_url);
+mainContainer.removeChild(shortid);
 
 try 
 {

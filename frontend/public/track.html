@@ -9,7 +9,8 @@
         <title>ShortURL Tool - Track Clicks</title>
         
         <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-        <script src='main.js'></script>
+        <link rel='stylesheet' type='text/css' media='screen' href='track.css'>
+        <script defer src='track.js'></script>
 
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -40,9 +41,16 @@
 
         <main>
             <h1>Track Clicks</h1>
-            <div class="container">
-                <h3>*Under Construction*</h3>
-            </div>    
+            <h3>Tracking clicks for: <p>http://localhost:8000/uVvUDjqY</p></h3>
+
+            <div id="outer">
+                <div id="shell">
+                    <h1>Clicks</h1>
+                    <div id="tracking-container">
+                        <h1 id="clicksContainer"></h1>
+                    </div>    
+                </div>
+            </div>
         </main>
 
         <footer>

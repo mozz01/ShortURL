@@ -1,0 +1,39 @@
+#outer {
+    background-color: #292F36;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 550px;
+    border: 7px solid #4ECDC4;
+    border-radius: 6px;
+    padding-top: 60px;
+}
+
+#shell {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #4ECDC4;
+    font-size: 30px;
+}
+
+#tracking-container {
+    height: 40vh;
+    width: 70%;
+    margin: 40px 0px 0px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#clicksContainer {
+    color: #4ECDC4;
+    font-size: 250px;
+    position: relative;
+    bottom: 100px;
+}
