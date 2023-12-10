@@ -257,12 +257,12 @@ async function getShortID(id_length){
 
 
 // Updates the database with the URL information 
-async function getCompleteShortURL(long_url, custom_id)
+async function getCompleteShortURL(urlLong, custom_id)
 {
     // Assembling short URL
     const short = redirectionBaseURL + custom_id;
     const data = {
-        "long": long_url,
+        "long": urlLong,
         "shortid": custom_id,
         "short": short
     };
@@ -332,23 +332,32 @@ app.get(`/:_shortid`, async (req, res) => {
 // Checks long URL input, adds potocol if needed, and pings the URL to see if responsive
 async function validateURL(targetURL)
 {
-    const urlPattern = /^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$/;
+    const urlPattern = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}$/;
     const urlBeninning = /^(http(s)?:\/\/)/;
-    let pingURL = targetURL;
+    const urlWWW = /www\./gim;
 
+    let pingURL = targetURL;
     // Check URL pattern for validity
     const isValid = urlPattern.test(targetURL);
-    // console.log(`${targetURL}: ${isValid ? 'Valid' : 'Invalid'} URL`);
     
     if(!isValid)
     {
         return false;
     }
 
+    // Add www. if missing
+    if(!urlWWW.test(targetURL))
+    {
+        pingURL = 'www.' + targetURL;
+    }
+
+    // Add https:// if missing
     if(!urlBeninning.test(targetURL))
     {
-        pingURL = 'https://' + targetURL;
+        pingURL = 'https://' + pingURL;
     }
+    
+    console.log(pingURL);
 
     // Ping URL to check for responsiveness
     const response = await fetch(pingURL, {
@@ -361,7 +370,7 @@ async function validateURL(targetURL)
     }
 
     console.log("Long URL validation completed.");
-    return targetURL;
+    return pingURL;
 }
 
 
