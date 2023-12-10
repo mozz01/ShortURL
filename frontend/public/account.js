@@ -90,8 +90,12 @@ async function deactivateSelected(event){
         }
         
         communicationParagraph.innerHTML = `Success!`;
-        tableBody.innerHTML = '';
-        fetchAllURLs();
+
+        // One second delay until the database is updated
+        setTimeout( () => {
+            tableBody.innerHTML = '';
+            fetchAllURLs();
+        }, 1000);
     }
     catch(err)
     {
