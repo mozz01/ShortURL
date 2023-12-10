@@ -31,7 +31,7 @@ body {
     color: var(--easy-white);
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
-
+    
     /* Define with at least one font name and its related generic family name.*/
     margin: 0px auto;
     padding: 0px;
@@ -227,8 +227,9 @@ del {}
 ins {} */
 
 /*  ----- Table ----- */
-/* table {}
 
+
+/*
 caption {}
 
 thead {}
@@ -241,9 +242,7 @@ tr {}
 
 tr:nth-child(even) {}
 
-th {}
 
-td {}
 
 td:nth-child(1) {}
 

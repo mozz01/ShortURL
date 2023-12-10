@@ -50,6 +50,14 @@ app.get('/urls', (req, res) => {
 });
 
 
+app.use("/urls", (req, res, next) => {
+    res.set("Access-Control-Allow-Headers", "*");
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "GET");
+    next();
+});
+
+
 // RETRIEVE by ID controller
 app.get('/urls/:_id', (req, res) => {
     urls.retrieveURLByID(req.params._id)
@@ -75,7 +83,7 @@ app.get('/urls/:_id', (req, res) => {
 app.use("/urls/shortid/:_shortid", (req, res, next) => {
     res.set("Access-Control-Allow-Headers", "*");
     res.set("Access-Control-Allow-Origin", "*");
-    res.set("Access-Control-Allow-Methods", "POST");
+    res.set("Access-Control-Allow-Methods", "GET");
     next();
 });
 

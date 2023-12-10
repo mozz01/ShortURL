@@ -61,7 +61,7 @@ const end = `
 </html>
 `;
 
-
+app.use(express.json());
 app.use(express.static("public"));
 app.use(
     express.urlencoded({
@@ -72,12 +72,14 @@ app.use(
 
 // Generate a short URL with a random ID whose length is set by user
 app.post("/generate", async (req, res) => {
-    let long_url = req.body.urlbox;
+    const long_url = req.body.urlbox;
 
     try
     {
         // Validating before generating short URL
-        if(! (await validateURL(long_url)) )
+        const validURL = await validateURL(long_url);
+
+        if( !validURL )
         {
             throw new Error(`The provided link "${long_url}" is invalid or is not reachable. Unable to geterate short URL.`);
         }
@@ -86,13 +88,13 @@ app.post("/generate", async (req, res) => {
         const id_length = req.body.alias;
 
         let generated_id = await getShortID(id_length);
-        let short_url = await getCompleteShortURL(long_url, generated_id);
+        let short_url = await getCompleteShortURL(validURL, generated_id);
         
         console.log("Short URL is ready. Sending response back to user.");
         res.send(
                 `${beginning}
                     <h1>Your URL is ready!</h1>
-                    <p class="hidden" id="long">${long_url}</p>
+                    <p class="hidden" id="long">${validURL}</p>
                     <p class="hidden" id="short">${short_url}</p>
                     <p class="hidden" id="shortid">${generated_id}</p>
                 ${end}`);
@@ -117,17 +119,20 @@ app.post('/customurl', async (req, res) => {
 
     try
     {
-        if(! (await validateURL(long_url)) )
+        // "validURL" is stored in the database instead of "long_url"
+        const validURL = await validateURL(long_url);
+
+        if( !validURL )
         {
             throw new Error(`The provided link "${long_url}" is invalid or is not reachable. Unable to geterate short URL.`);
         }
     
-        let short_url = await getCompleteShortURL(long_url, customID);
+        let short_url = await getCompleteShortURL(validURL, customID);
         
         res.send(
                 `${beginning}
                     <h1>Your URL is ready!</h1>
-                    <p class="hidden" id="long">${long_url}</p>
+                    <p class="hidden" id="long">${validURL}</p>
                     <p class="hidden" id="short">${short_url}</p>
                     <p class="hidden" id="shortid">${customID}</p>
                 ${end}`);
@@ -143,6 +148,69 @@ app.post('/customurl', async (req, res) => {
                 <a href="index.html"><button>Go to Homepage</button></a>
             ${end}`);
     }
+});
+
+
+// CORS handler
+app.use("/retrieveall", (req, res, next) => {
+    res.set("Access-Control-Allow-Headers", "*");
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "GET");
+    next();
+});
+
+
+// This help with retrieving all urls from the database 
+app.get('/retrieveall', async (req, res) => {
+    const response = await fetch(dbBaseEndpoint, { 
+        headers: {"Content-Type": "application/json"},
+        method: "GET"
+    })
+
+    if(!response.ok)
+    {
+        console.log("Couldn't fetch URLs");
+        return;
+    }
+
+    const urls = await response.json();
+
+    res.send(urls);
+});
+
+
+// CORS handler
+app.use("/deactivate", (req, res, next) => {
+    res.set("Access-Control-Allow-Headers", "*");
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "POST");
+    next();
+});
+
+
+// This help with deleting selected urls from the database 
+app.post('/deactivate', (req, res) => {
+    const urlIDArray = req.body.ids;
+    let deleteEndpoint = '';
+
+    urlIDArray.forEach(async id => {
+        deleteEndpoint = dbBaseEndpoint + `/${id}`
+        const response = await fetch(deleteEndpoint, { 
+            headers: {"Content-Type": "application/json"},
+            method: "DELETE"
+        });
+    
+        if(!response.ok)
+        {
+            console.log(`Couldn't delete ${id}.`);
+        }
+        else
+        {
+            console.log(`Deleted ${id}.`);
+        }
+    });
+    
+    res.status(204).send(true);
 });
 
 
@@ -287,8 +355,13 @@ async function validateURL(targetURL)
         mode: 'no-cors'
     });
 
+    if(!response.ok)
+    {
+        return false;
+    }
+
     console.log("Long URL validation completed.");
-    return response.ok;
+    return targetURL;
 }
 
 
@@ -327,6 +400,7 @@ async function updateClicks(url)
         console.log(`\n\tError raised: ${error.message}\n`);
     }
 }
+
 
 
 app.listen(PORT, () => {

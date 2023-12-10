@@ -9,7 +9,8 @@
         <title>ShortURL Tool - My Account</title>
         
         <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-        <script src='main.js'></script>
+        <link rel='stylesheet' type='text/css' media='screen' href='account.css'>
+        <script defer src='account.js'></script>
 
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -40,8 +41,32 @@
 
         <main>
             <h1>My Account</h1>
+            <h3>Slecet URL(s) and choose which task you want to perform from below.</h3>
 
-            <h3>*Under Construction*</h3>
+            <p id="communicationParagraph">
+
+            </p>
+
+            <div id="urlsContainer">
+                
+                <form>
+                    <table>
+                        <div id="accountOptionsContainer">
+                            <button type="submit" id="deactivateURLButton">Deactivate Selected</button>
+                            <button type="button" id="visitTrackingPage">Visit Clicks Tracking Page</button>
+                        </div>
+                        <thead>
+                            <th>Select</th>
+                            <th>Short URL</th>
+                            <th>Long URL</th>
+                            <th>Clicks</th>
+                        </thead>
+                        <tbody id="tableBody">
+                            
+                        </tbody>
+                    </table>
+                </form>
+            </div>
         </main>
 
         <footer>

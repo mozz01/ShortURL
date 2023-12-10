@@ -1,0 +1,131 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 4px solid #dfdfdf;
+}
+
+tbody{
+    max-width: 600px;
+}
+
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 2px solid #cac9c9;
+
+    font-size: 16px;
+    
+    /* background-color: #c3bfc7; */
+}
+
+
+th:nth-child(1), th:nth-child(2), th:nth-child(3),
+td:nth-child(1), td:nth-child(2), td:nth-child(3){
+    border-right: 2px solid #cac9c9;
+}
+
+th:nth-child(1), th:nth-child(4),
+td:nth-child(1), td:nth-child(4)
+{
+    width: 40px;
+}
+
+
+td:nth-child(1), td:nth-child(4) {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.shortURLContainer{
+    width: 300px;  
+    white-space: nowrap;
+    overflow-x: auto; 
+}
+
+.longURLContainer{
+    width: 600px;  
+    white-space: nowrap;
+    overflow-x: auto; 
+}
+
+
+tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+
+#urlsContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form{
+    width: 100%;
+}
+
+
+main button{
+    display: block;
+    width: auto;
+    background-color: var(--light-black);
+    color: white;
+    font-weight: 600;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 45px;
+    margin-top: 0px;
+    font-size: 18px;
+}
+
+
+
+
+/* Hide the default checkbox */
+input[type="checkbox"] {
+    display: none;
+}
+
+label > input[type="checkbox"] + *::before {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 10%;
+    position: relative;
+    cursor: pointer;
+    content: '';
+    width: 20px; 
+    height: 20px;
+    border: 2px solid #a5a5a5;
+    background-color: #dedddd; 
+}
+
+label > input[type="checkbox"]:checked + *::before {
+    content: "";
+    color: white;
+    text-align: center;
+    background: #4ECDC4;
+    border-color: #4ECDC4;
+}
+
+label > input[type="checkbox"]:checked + * {
+    color: #4ECDC4;
+}
+
+#accountOptionsContainer {
+    display: flex;
+}
+
+.tableLink{
+    text-decoration: underline;
+    color: #292F36;
+}
+
+.tableLink:hover{
+    color: #4ECDC4;
+}
