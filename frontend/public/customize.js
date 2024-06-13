@@ -18,7 +18,7 @@ function updateCharacterCount(input, count, minCount=1, maxCount=2048)
         _count.textContent = _input.value.length; 
     }
 
-    if(inputLength > minCount && inputLength < maxCount){
+    if(inputLength >= minCount && inputLength <= maxCount){
         customurlbutton.disabled = false;
     }
     else 

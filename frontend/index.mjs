@@ -215,7 +215,8 @@ app.post('/deactivate', (req, res) => {
 
 
 // Request a randomized string from the microservice
-async function getShortID(id_length){
+async function getShortID(id_length)
+{
     const baseURL = new URL(`http://localhost:${process.env.SERVICE_PORT}/`)
     const data = {
         length: id_length
@@ -409,7 +410,6 @@ async function updateClicks(url)
         console.log(`\n\tError raised: ${error.message}\n`);
     }
 }
-
 
 
 app.listen(PORT, () => {
