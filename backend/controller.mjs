@@ -92,7 +92,7 @@ app.use("/urls/shortid/:_shortid", (req, res, next) => {
 app.get('/urls/shortid/:_shortid', (req, res) => {
     urls.retrieveURLByShortID(req.params._shortid)
     .then(url => { 
-        if (url !== null) 
+        if (url !== null && url.short != null) 
         {
             console.log(`"${url.short}" was retrieved, based on its short ID.`);
             res.json(url);

@@ -73,7 +73,6 @@ app.use(
 // Generate a short URL with a random ID whose length is set by user
 app.post("/generate", async (req, res) => {
     const long_url = req.body.urlbox;
-
     try
     {
         // Validating before generating short URL
@@ -88,6 +87,10 @@ app.post("/generate", async (req, res) => {
         const id_length = req.body.alias;
 
         let generated_id = await getShortID(id_length);
+        if (generated_id < 0)
+        {
+            throw new Error(`Bad request. Failed to geterate short URL.`);
+        }
         let short_url = await getCompleteShortURL(validURL, generated_id);
         
         console.log("Short URL is ready. Sending response back to user.");
@@ -249,7 +252,7 @@ async function getShortID(id_length)
         if(error.message === `HTTP error!`)
         {
             console.log(`\n\tError raised: ${error.message}\n\tStatus: ${error.cause}`);
-            return "Failed to generate ID.";
+            return -1;
         }
 
         console.error('Fetch error:', error);
@@ -308,7 +311,7 @@ app.get(`/:_shortid`, async (req, res) => {
     try 
     {
         const response = await fetch(retrieveByShortIDEndpoint, { headers: {"Content-Type": "application/json"} });
-        
+
         if(!response.ok)
         {
             throw new Error(`Failed to reach the database while retrieving long URL.`);
@@ -324,6 +327,7 @@ app.get(`/:_shortid`, async (req, res) => {
         if(error.message === `Failed to reach the database while retrieving long URL.`)
         {
             console.error(`Error raised:\n\n\t${error.message}\n\n\t${error}\n`);
+            res.sendStatus(400);
         }
         console.error(error.message, error);
     }
